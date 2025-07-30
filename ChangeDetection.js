@@ -2,7 +2,7 @@
  * Changedetection *
  ************************/
 
-import { core, data, sound, util, visual, hardware } from './lib/psychojs-2024.2.1post4.js';
+import { core, data, sound, util, visual, hardware } from './lib/psychojs-2024.2.2.js';
 const { PsychoJS } = core;
 const { TrialHandler, MultiStairHandler } = data;
 const { Scheduler } = util;
@@ -101,7 +101,7 @@ async function updateInfo() {
   currentLoop = psychoJS.experiment;  // right now there are no loops
   expInfo['date'] = util.MonotonicClock.getDateStr();  // add a simple timestamp
   expInfo['expName'] = expName;
-  expInfo['psychopyVersion'] = '2024.2.1post4';
+  expInfo['psychopyVersion'] = '2024.2.2';
   expInfo['OS'] = window.navigator.platform;
 
 
