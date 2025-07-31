@@ -15,6 +15,7 @@ const { round } = util;
 let expName = 'ChangeDetection';  // from the Builder filename that created this script
 let expInfo = {
     'participant': `${util.pad(Number.parseFloat(util.randint(0, 999999)).toFixed(0), 6)}`,
+    'name': '',
 };
 
 // Start code blocks for 'Before Experiment'
@@ -63,6 +64,7 @@ flowScheduler.add(practice_trialsLoopEnd);
 
 
 
+
 flowScheduler.add(end_practiceRoutineBegin());
 flowScheduler.add(end_practiceRoutineEachFrame());
 flowScheduler.add(end_practiceRoutineEnd());
@@ -70,6 +72,8 @@ const trialsLoopScheduler = new Scheduler(psychoJS);
 flowScheduler.add(trialsLoopBegin(trialsLoopScheduler));
 flowScheduler.add(trialsLoopScheduler);
 flowScheduler.add(trialsLoopEnd);
+
+
 
 
 
@@ -135,6 +139,8 @@ var image;
 var start_practiceClock;
 var welcome_text_2;
 var key_resp_5;
+var fixClock;
+var text_2;
 var encodingClock;
 var item1;
 var item2;
@@ -144,7 +150,6 @@ var item5;
 var item6;
 var item7;
 var item8;
-var fixation;
 var delay_intervalClock;
 var text;
 var timer;
@@ -229,6 +234,20 @@ async function experimentInit() {
   });
   
   key_resp_5 = new core.Keyboard({psychoJS: psychoJS, clock: new util.Clock(), waitForStart: true});
+  
+  // Initialize components for Routine "fix"
+  fixClock = new util.Clock();
+  text_2 = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'text_2',
+    text: '+',
+    font: 'Arial',
+    units: undefined, 
+    pos: [0, 0], draggable: false, height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    languageStyle: 'LTR',
+    color: new util.Color('black'),  opacity: undefined,
+    depth: 0.0 
+  });
   
   // Initialize components for Routine "encoding"
   encodingClock = new util.Clock();
@@ -352,27 +371,15 @@ async function experimentInit() {
     opacity: undefined, depth: -7, interpolate: true,
   });
   
-  fixation = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'fixation',
-    text: '+',
-    font: 'Open Sans',
-    units: undefined, 
-    pos: [0, 0], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
-    languageStyle: 'LTR',
-    color: new util.Color('black'),  opacity: undefined,
-    depth: -8.0 
-  });
-  
   // Initialize components for Routine "delay_interval"
   delay_intervalClock = new util.Clock();
   text = new visual.TextStim({
     win: psychoJS.window,
     name: 'text',
-    text: '+',
+    text: '',
     font: 'Arial',
     units: undefined, 
-    pos: [0, 0], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
+    pos: [0, 0], draggable: false, height: 0.03,  wrapWidth: undefined, ori: 0.0,
     languageStyle: 'LTR',
     color: new util.Color('black'),  opacity: undefined,
     depth: 0.0 
@@ -1011,6 +1018,9 @@ function practice_trialsLoopBegin(practice_trialsLoopScheduler, snapshot) {
     for (const thisPractice_trial of practice_trials) {
       snapshot = practice_trials.getSnapshot();
       practice_trialsLoopScheduler.add(importConditions(snapshot));
+      practice_trialsLoopScheduler.add(fixRoutineBegin(snapshot));
+      practice_trialsLoopScheduler.add(fixRoutineEachFrame());
+      practice_trialsLoopScheduler.add(fixRoutineEnd(snapshot));
       practice_trialsLoopScheduler.add(encodingRoutineBegin(snapshot));
       practice_trialsLoopScheduler.add(encodingRoutineEachFrame());
       practice_trialsLoopScheduler.add(encodingRoutineEnd(snapshot));
@@ -1083,9 +1093,15 @@ function trialsLoopBegin(trialsLoopScheduler, snapshot) {
     for (const thisTrial of trials) {
       snapshot = trials.getSnapshot();
       trialsLoopScheduler.add(importConditions(snapshot));
+      trialsLoopScheduler.add(fixRoutineBegin(snapshot));
+      trialsLoopScheduler.add(fixRoutineEachFrame());
+      trialsLoopScheduler.add(fixRoutineEnd(snapshot));
       trialsLoopScheduler.add(encodingRoutineBegin(snapshot));
       trialsLoopScheduler.add(encodingRoutineEachFrame());
       trialsLoopScheduler.add(encodingRoutineEnd(snapshot));
+      trialsLoopScheduler.add(delay_intervalRoutineBegin(snapshot));
+      trialsLoopScheduler.add(delay_intervalRoutineEachFrame());
+      trialsLoopScheduler.add(delay_intervalRoutineEnd(snapshot));
       trialsLoopScheduler.add(testRoutineBegin(snapshot));
       trialsLoopScheduler.add(testRoutineEachFrame());
       trialsLoopScheduler.add(testRoutineEnd(snapshot));
@@ -1129,6 +1145,104 @@ function trialsLoopEndIteration(scheduler, snapshot) {
 }
 
 
+var fixMaxDurationReached;
+var fixMaxDuration;
+var fixComponents;
+function fixRoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //--- Prepare to start Routine 'fix' ---
+    t = 0;
+    fixClock.reset(); // clock
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    fixMaxDurationReached = false;
+    // update component parameters for each repeat
+    psychoJS.experiment.addData('fix.started', globalClock.getTime());
+    fixMaxDuration = null
+    // keep track of which components have finished
+    fixComponents = [];
+    fixComponents.push(text_2);
+    
+    for (const thisComponent of fixComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function fixRoutineEachFrame() {
+  return async function () {
+    //--- Loop for each frame of Routine 'fix' ---
+    // get current time
+    t = fixClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *text_2* updates
+    if (t >= 0.0 && text_2.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      text_2.tStart = t;  // (not accounting for frame time here)
+      text_2.frameNStart = frameN;  // exact frame index
+      
+      text_2.setAutoDraw(true);
+    }
+    
+    // Run 'Each Frame' code from code_4
+    if ((t > 1)) {
+        continueRoutine = false;
+    }
+    
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of fixComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function fixRoutineEnd(snapshot) {
+  return async function () {
+    //--- Ending Routine 'fix' ---
+    for (const thisComponent of fixComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    psychoJS.experiment.addData('fix.stopped', globalClock.getTime());
+    // the Routine "fix" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset();
+    
+    // Routines running outside a loop should always advance the datafile row
+    if (currentLoop === psychoJS.experiment) {
+      psychoJS.experiment.nextEntry(snapshot);
+    }
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
 var encodingMaxDurationReached;
 var encodingMaxDuration;
 var encodingComponents;
@@ -1141,7 +1255,6 @@ function encodingRoutineBegin(snapshot) {
     encodingClock.reset(); // clock
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
-    routineTimer.add(1.750000);
     encodingMaxDurationReached = false;
     // update component parameters for each repeat
     item1.setFillColor(new util.Color(color1));
@@ -1180,7 +1293,6 @@ function encodingRoutineBegin(snapshot) {
     encodingComponents.push(item6);
     encodingComponents.push(item7);
     encodingComponents.push(item8);
-    encodingComponents.push(fixation);
     
     for (const thisComponent of encodingComponents)
       if ('status' in thisComponent)
@@ -1190,7 +1302,6 @@ function encodingRoutineBegin(snapshot) {
 }
 
 
-var frameRemains;
 function encodingRoutineEachFrame() {
   return async function () {
     //--- Loop for each frame of Routine 'encoding' ---
@@ -1200,7 +1311,7 @@ function encodingRoutineEachFrame() {
     // update/draw components on each frame
     
     // *item1* updates
-    if (t >= 1.5 && item1.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0 && item1.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       item1.tStart = t;  // (not accounting for frame time here)
       item1.frameNStart = frameN;  // exact frame index
@@ -1208,14 +1319,9 @@ function encodingRoutineEachFrame() {
       item1.setAutoDraw(true);
     }
     
-    frameRemains = 1.5 + 0.25 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (item1.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      item1.setAutoDraw(false);
-    }
-    
     
     // *item2* updates
-    if (t >= 1.5 && item2.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0 && item2.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       item2.tStart = t;  // (not accounting for frame time here)
       item2.frameNStart = frameN;  // exact frame index
@@ -1223,14 +1329,9 @@ function encodingRoutineEachFrame() {
       item2.setAutoDraw(true);
     }
     
-    frameRemains = 1.5 + 0.25 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (item2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      item2.setAutoDraw(false);
-    }
-    
     
     // *item3* updates
-    if (t >= 1.5 && item3.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0 && item3.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       item3.tStart = t;  // (not accounting for frame time here)
       item3.frameNStart = frameN;  // exact frame index
@@ -1238,14 +1339,9 @@ function encodingRoutineEachFrame() {
       item3.setAutoDraw(true);
     }
     
-    frameRemains = 1.5 + 0.25 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (item3.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      item3.setAutoDraw(false);
-    }
-    
     
     // *item4* updates
-    if (t >= 1.5 && item4.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0 && item4.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       item4.tStart = t;  // (not accounting for frame time here)
       item4.frameNStart = frameN;  // exact frame index
@@ -1253,14 +1349,9 @@ function encodingRoutineEachFrame() {
       item4.setAutoDraw(true);
     }
     
-    frameRemains = 1.5 + 0.25 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (item4.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      item4.setAutoDraw(false);
-    }
-    
     
     // *item5* updates
-    if (t >= 1.5 && item5.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0 && item5.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       item5.tStart = t;  // (not accounting for frame time here)
       item5.frameNStart = frameN;  // exact frame index
@@ -1268,14 +1359,9 @@ function encodingRoutineEachFrame() {
       item5.setAutoDraw(true);
     }
     
-    frameRemains = 1.5 + 0.25 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (item5.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      item5.setAutoDraw(false);
-    }
-    
     
     // *item6* updates
-    if (t >= 1.5 && item6.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0 && item6.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       item6.tStart = t;  // (not accounting for frame time here)
       item6.frameNStart = frameN;  // exact frame index
@@ -1283,14 +1369,9 @@ function encodingRoutineEachFrame() {
       item6.setAutoDraw(true);
     }
     
-    frameRemains = 1.5 + 0.25 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (item6.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      item6.setAutoDraw(false);
-    }
-    
     
     // *item7* updates
-    if (t >= 1.5 && item7.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0 && item7.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       item7.tStart = t;  // (not accounting for frame time here)
       item7.frameNStart = frameN;  // exact frame index
@@ -1298,14 +1379,9 @@ function encodingRoutineEachFrame() {
       item7.setAutoDraw(true);
     }
     
-    frameRemains = 1.5 + 0.25 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (item7.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      item7.setAutoDraw(false);
-    }
-    
     
     // *item8* updates
-    if (t >= 1.5 && item8.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0 && item8.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       item8.tStart = t;  // (not accounting for frame time here)
       item8.frameNStart = frameN;  // exact frame index
@@ -1313,24 +1389,9 @@ function encodingRoutineEachFrame() {
       item8.setAutoDraw(true);
     }
     
-    frameRemains = 1.5 + 0.25 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (item8.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      item8.setAutoDraw(false);
-    }
-    
-    
-    // *fixation* updates
-    if (t >= 0.5 && fixation.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      fixation.tStart = t;  // (not accounting for frame time here)
-      fixation.frameNStart = frameN;  // exact frame index
-      
-      fixation.setAutoDraw(true);
-    }
-    
-    frameRemains = 0.5 + 1.0 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (fixation.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      fixation.setAutoDraw(false);
+    // Run 'Each Frame' code from code_5
+    if ((t > 0.25)) {
+        continueRoutine = false;
     }
     
     // check for quit (typically the Esc key)
@@ -1351,7 +1412,7 @@ function encodingRoutineEachFrame() {
       }
     
     // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
+    if (continueRoutine) {
       return Scheduler.Event.FLIP_REPEAT;
     } else {
       return Scheduler.Event.NEXT;
@@ -1369,11 +1430,9 @@ function encodingRoutineEnd(snapshot) {
       }
     }
     psychoJS.experiment.addData('encoding.stopped', globalClock.getTime());
-    if (encodingMaxDurationReached) {
-        routineTimer.add(encodingMaxDuration);
-    } else {
-        routineTimer.add(-1.750000);
-    }
+    // the Routine "encoding" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset();
+    
     // Routines running outside a loop should always advance the datafile row
     if (currentLoop === psychoJS.experiment) {
       psychoJS.experiment.nextEntry(snapshot);
@@ -1396,7 +1455,6 @@ function delay_intervalRoutineBegin(snapshot) {
     delay_intervalClock.reset(); // clock
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
-    routineTimer.add(1.000000);
     delay_intervalMaxDurationReached = false;
     // update component parameters for each repeat
     // Run 'Begin Routine' code from code
@@ -1426,17 +1484,12 @@ function delay_intervalRoutineEachFrame() {
     // update/draw components on each frame
     
     // *text* updates
-    if (t >= 0.1 && text.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0 && text.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       text.tStart = t;  // (not accounting for frame time here)
       text.frameNStart = frameN;  // exact frame index
       
       text.setAutoDraw(true);
-    }
-    
-    frameRemains = 0.1 + 0.9 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (text.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      text.setAutoDraw(false);
     }
     
     // Run 'Each Frame' code from code
@@ -1466,7 +1519,7 @@ function delay_intervalRoutineEachFrame() {
       }
     
     // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
+    if (continueRoutine) {
       return Scheduler.Event.FLIP_REPEAT;
     } else {
       return Scheduler.Event.NEXT;
@@ -1484,11 +1537,9 @@ function delay_intervalRoutineEnd(snapshot) {
       }
     }
     psychoJS.experiment.addData('delay_interval.stopped', globalClock.getTime());
-    if (delay_intervalMaxDurationReached) {
-        routineTimer.add(delay_intervalMaxDuration);
-    } else {
-        routineTimer.add(-1.000000);
-    }
+    // the Routine "delay_interval" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset();
+    
     // Routines running outside a loop should always advance the datafile row
     if (currentLoop === psychoJS.experiment) {
       psychoJS.experiment.nextEntry(snapshot);
@@ -1805,6 +1856,7 @@ function feedbackRoutineBegin(snapshot) {
 }
 
 
+var frameRemains;
 function feedbackRoutineEachFrame() {
   return async function () {
     //--- Loop for each frame of Routine 'feedback' ---
